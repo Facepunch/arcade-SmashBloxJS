@@ -29,11 +29,6 @@ Ball.prototype.onUpdate = function()
 		this.bounce(new Vector2f(0, -1.0), 1.0);
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}
-	else if (this.y < 0.0)
-	{
-		this.bounce(Vector2f.UNIT_Y, 1.0);
-		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
-	}
 
 	if (this.stage.paddle.bounds.intersects(this.bounds))
 	{

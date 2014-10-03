@@ -27,6 +27,7 @@ GameStage = function(demo)
 	this.livesText;
 
 	this.lastParticle = 0;
+	this.nextLifeWait = 0.0;
 
 	this.setScore = function(score)
 	{
@@ -90,6 +91,7 @@ GameStage = function(demo)
 		this.ball.velocity = Vector2f.ZERO;
 		this.ball.x = this.paddle.getNextX();
 		this.ball.y = this.paddle.y + 8;
+		this.ball.isVisible = true;
 
 		this.changeState(State.Serving);
 	}
@@ -138,7 +140,49 @@ GameStage = function(demo)
 
 	this.updatePlayingState = function()
 	{
+		if (this.ball.y < 4.0)
+		{		
+			this.changeState(State.LostBall);
 
+			this.setLives(this.lives - 1);
+			audio.play(audio.getSound("miss"), 1.0, 1.0);
+
+			this.changeState(State.NextLifeWait);
+		}
+	}
+
+	this.updateNextLifeWaitState = function()
+	{
+		this.nextLifeWait += this.timestep;
+
+		if (this.nextLifeWait >= 0.5)
+		{
+			this.nextLifeWait = 0.0;
+
+			if (this.lives >= 0)
+			{
+				this.changeState(State.NewBall);
+			}
+			else
+			{
+				this.changeState(State.GameOver);
+
+				this.ball.velocity = Vector2f.ZERO;
+			}
+
+			this.ball.isVisible = false;
+		}
+	}
+
+	this.updateNewBallState = function()
+	{
+		this.ball.velocity = Vector2f.ZERO;
+		this.ball.y = this.paddle.y + 8;
+		this.ball.isVisible = true;
+
+		this.combo = 0;
+
+		this.changeState(State.Serving);
 	}
 
 	this.isCurrentState = function(state)
@@ -153,13 +197,21 @@ GameStage.prototype.onUpdate = function()
 {
 	this.particleSpam();
 
-	if (this.isCurrentState(State.Serving))
+	if (this.isCurrentState(State.NewBall))
+	{
+		this.updateNewBallState();
+	}
+	else if (this.isCurrentState(State.Serving))
 	{
 		this.updateServingState();
 	}
 	else if (this.isCurrentState(State.Playing))
 	{
 		this.updatePlayingState();
+	}
+	else if (this.isCurrentState(State.NextLifeWait))
+	{
+		this.updateNextLifeWaitState();
 	}
 
 	BaseStage.prototype.onUpdate.call(this);
