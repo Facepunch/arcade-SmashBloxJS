@@ -61,6 +61,16 @@
 		return { hit : hit, block : block, phase : phase }
 	}
 
+	var contains = function(arr, value)
+	{
+		for (var i = 0; i < arr.length; ++i)
+		{
+			if (arr[i].equals(value)) return true;
+		}
+
+		return false;
+	}
+
 	this.checkForCollision = function(ball)
 	{
 		var hit = false;
@@ -81,7 +91,7 @@
 			normal = normal.add(new Vector2f(1, -1));
 			phase = collideRes.phase;
 
-			if (collided.indexOf(collideRes.block) == -1) collided.push(collideRes.block);
+			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.topRight, phase);
@@ -92,7 +102,7 @@
 			normal = normal.add(new Vector2f(-1, -1));
 			phase = collideRes.phase;
 
-			if (collided.indexOf(collideRes.block) == -1) collided.push(collideRes.block);
+			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.bottomLeft, phase);
@@ -103,7 +113,7 @@
 			normal = normal.add(new Vector2f(1, 1));
 			phase = collideRes.phase;
 
-			if (collided.indexOf(collideRes.block) == -1) collided.push(collideRes.block);
+			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.bottomRight, phase);
@@ -114,13 +124,15 @@
 			normal = normal.add(new Vector2f(-1, 1));
 			phase = collideRes.phase;
 
-			if (collided.indexOf(collideRes.block) == -1) collided.push(collideRes.block);
+			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		for (var i = 0; i < collided.length; ++i)
 		{
 			var p = collided[i];
 			this.setGrid(p.x, p.y, this.getGrid(p.x, p.y) - 1);
+
+			this.stage.onBlockHit();
 		}
 
 		if (normal.lengthSquared > 0.0)

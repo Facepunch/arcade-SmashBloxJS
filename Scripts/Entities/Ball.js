@@ -3,7 +3,7 @@
 	this.sprite = null;
 	this.paddleHit = null;
 	this.blockHit = null;
-	this.velocity = new Vector2f(256, 256);
+	this.velocity = new Vector2f(150, 150);
 }
 
 Ball.prototype.onUpdate = function()
@@ -13,7 +13,7 @@ Ball.prototype.onUpdate = function()
 	if (this.x < 8.0)
 	{
 		this.x = 8.0;
-		this.bounce(new Vector2f(1, 0), 1.0);
+		this.bounce(Vector2f.UNIT_X, 1.0);
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}
 	else if (this.x > graphics.width - 8.0)
@@ -29,10 +29,19 @@ Ball.prototype.onUpdate = function()
 		this.bounce(new Vector2f(0, -1.0), 1.0);
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}
-	else if (this.y < 8.0)
+	else if (this.y < 0.0)
 	{
-		this.y = 8.0;
-		this.bounce(new Vector2f(0, 1), 1.0);
+		//this.y = 0.0;
+		this.bounce(Vector2f.UNIT_Y, 1.0);
+		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
+	}
+
+	if (this.stage.paddle.bounds.intersects(this.bounds))
+	{
+		this.bounce(Vector2f.UNIT_Y, 1.0);
+
+		this.stage.onPaddleHit();
+
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}
 
@@ -42,7 +51,7 @@ Ball.prototype.onUpdate = function()
 	{
 		if (res.normal.x > 0)
 		{
-			this.bounce(new Vector2f(1, 0), 1.0);
+			this.bounce(Vector2f.UNIT_X, 1.0);
 		}
 		else if (res.normal.x < 0)
 		{
@@ -51,14 +60,12 @@ Ball.prototype.onUpdate = function()
 
 		if (res.normal.y > 0)
 		{
-			this.bounce(new Vector2f(0, 1), 1.0);
+			this.bounce(Vector2f.UNIT_Y, 1.0);
 		}
 		else if (res.normal.y < 0)
 		{
 			this.bounce(new Vector2f(0, -1), 1.0);
 		}
-
-		Debug.log(res.phase);
 
 		audio.play(this.blockHit, this.panValue, 1.0, 1.0 - Math.log(res.phase, 10) / 2.0);
 	}

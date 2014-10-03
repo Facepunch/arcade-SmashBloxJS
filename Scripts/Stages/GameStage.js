@@ -78,6 +78,8 @@ GameStage = function(demo)
 		this.setScore(0);
 		this.setLives(3);
 
+		this.combo = 0;
+
 		for (var y = 0; y < this.blocks.getRows(); ++y)
 		{
 			for (var x = 0; x < this.blocks.getColumns(); ++x)
@@ -103,6 +105,20 @@ GameStage = function(demo)
 
 			this.lastParticle = game.time;
 		}
+	}
+
+	this.onBlockHit = function()
+	{
+		this.addScore(++this.combo);
+
+		Debug.log("block hit");
+	}
+
+	this.onPaddleHit = function()
+	{
+		this.combo = 0;
+
+		Debug.log("paddle hit");
 	}
 }
 
