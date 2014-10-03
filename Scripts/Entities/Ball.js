@@ -3,7 +3,7 @@
 	this.sprite = null;
 	this.paddleHit = null;
 	this.blockHit = null;
-	this.velocity = new Vector2f(150, 150);
+	this.velocity = new Vector2f(0, 0);
 }
 
 Ball.prototype.onUpdate = function()
@@ -31,7 +31,6 @@ Ball.prototype.onUpdate = function()
 	}
 	else if (this.y < 0.0)
 	{
-		//this.y = 0.0;
 		this.bounce(Vector2f.UNIT_Y, 1.0);
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}

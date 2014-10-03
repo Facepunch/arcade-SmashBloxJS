@@ -48,14 +48,13 @@ GameStage = function(demo)
 
 	this.onEnter = function()
 	{
+		this.changeState(State.PreInit);
+
 		graphics.setClearColor(13);
 
 		this.ball = this.add(new Ball(), 1);
 		this.paddle = this.add(new Paddle(), 0);
 		this.blocks = this.add(new BlockGrid(12, 8), 0);
-
-		this.ball.x = 32;
-		this.ball.y = 32;
 
 		this.paddle.x = graphics.width / 2;
 		this.paddle.y = 8;
@@ -73,8 +72,6 @@ GameStage = function(demo)
 		this.livesText = this.add(new Text(font, white, 0));
 		this.livesText.y = graphics.height - 12;
 
-		curState = State.PreInit;
-
 		this.setScore(0);
 		this.setLives(3);
 
@@ -89,6 +86,12 @@ GameStage = function(demo)
 				this.blocks.setGrid(x, y, 1 + (y % this.blocks.getPhases()));
 			}
 		}
+
+		this.ball.velocity = Vector2f.ZERO;
+		this.ball.x = this.paddle.getNextX();
+		this.ball.y = this.paddle.y + 8;
+
+		this.changeState(State.Serving);
 	}
 
 	this.particleSpam = function()
@@ -102,23 +105,45 @@ GameStage = function(demo)
 								 Math.random() * 0.25 + 0.25);
 			}
 
-
 			this.lastParticle = game.time;
 		}
+	}
+
+	this.changeState = function(nextState)
+	{
+		this.curState = nextState;
 	}
 
 	this.onBlockHit = function()
 	{
 		this.addScore(++this.combo);
-
-		Debug.log("block hit");
 	}
 
 	this.onPaddleHit = function()
 	{
 		this.combo = 0;
+	}
 
-		Debug.log("paddle hit");
+	this.updateServingState = function()
+	{
+		this.ball.x = this.paddle.getNextX();
+
+		if (controls.a.justPressed)
+		{
+			this.changeState(State.Playing);
+
+			this.ball.velocity = new Vector2f(this.paddle.nextX > this.paddle.x ? 1.0 : -1.0, 1.5).mul(96.0);
+		}
+	}
+
+	this.updatePlayingState = function()
+	{
+
+	}
+
+	this.isCurrentState = function(state)
+	{
+		return this.curState == state;
 	}
 }
 
@@ -128,9 +153,13 @@ GameStage.prototype.onUpdate = function()
 {
 	this.particleSpam();
 
-	if (this.paddle)
+	if (this.isCurrentState(State.Serving))
 	{
-		this.paddle.getNextX();
+		this.updateServingState();
+	}
+	else if (this.isCurrentState(State.Playing))
+	{
+		this.updatePlayingState();
 	}
 
 	BaseStage.prototype.onUpdate.call(this);
