@@ -25,6 +25,22 @@ game.onLoadResources = function(volume)
 
 game.onReset = function()
 {
-    //game.setStage(new AttractStage(demo));
-    game.setStage(new GameStage(demo));
+	//game.setStage(new AttractStage(demo));
+	//game.setStage(new GameStage(demo));
+	game.setStage(new EnterScoreStage(demo, true, 32));
+}
+
+game.submitHighscore = function(completed, score)
+{
+	game.setStage(new EnterScoreStage(demo, completed, score));
+}
+
+game.showHighscores = function()
+{
+	game.setStage(new HighscoreStage(demo));
+}
+
+game.submitAndShowHighscores = function(highscore)
+{
+
 }
