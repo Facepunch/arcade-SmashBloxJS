@@ -118,7 +118,7 @@ GameStage = function(demo)
 			{
 				this.changeState(State.GameOver);
 
-				game.submitHighscore(false, this.score);
+				game.enterHighscore(false, this.score);
 			}
 
 			this.ball.isVisible = false;

@@ -44,6 +44,21 @@ AttractStage = function(demo)
 			lastSwatchChange = game.time;
 			this.nextSwatch();
 		}
+
+		if (controls.a.justPressed || controls.b.justPressed ||
+			controls.start.justPressed || controls.select.justPressed || !controls.analog.isZero)
+		{
+			var showScores = controls.b.isDown;
+
+			if (showScores)
+			{
+				game.showHighscores();
+			}
+			else
+			{
+				game.start();
+			}
+		}
 	}
 
 	this.onSwatchChanged = function(swatch)
