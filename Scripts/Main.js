@@ -28,7 +28,6 @@ game.onReset = function()
 	//game.setStage(new AttractStage(demo));
 	//game.setStage(new GameStage(demo));
 	//game.setStage(new EnterScoreStage(demo, true, 32));
-    
 	game.setStage(new HighscoreStage(demo));
 }
 
