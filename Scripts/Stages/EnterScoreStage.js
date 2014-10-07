@@ -104,7 +104,7 @@ EnterScoreStage = function(demo, completed, score)
 
 		if (this.curChar >= 3)
 		{
-			game.showHighscores();
+			game.submitAndShowHighscores(new Highscore("ABC", this.score));
 		}
 	}
 

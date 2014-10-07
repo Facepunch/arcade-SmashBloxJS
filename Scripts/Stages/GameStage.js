@@ -96,7 +96,7 @@ GameStage = function(demo)
 			this.changeState(State.LostBall);
 
 			this.setLives(this.lives - 1);
-			audio.play(audio.getSound("miss"), 1.0, 1.0);
+			audio.play(audio.getSound("miss"), 0.0, 1.0, 1.0);
 
 			this.changeState(State.NextLifeWait);
 		}

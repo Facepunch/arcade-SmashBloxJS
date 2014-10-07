@@ -36,11 +36,14 @@ BaseStage = function()
 		return swatches[swatchIndex];
 	}
 
-	this.onSwatchChanged = function(swatch) { }
-
 	this.addParticle = function(origin, velocity, lifetime)
 	{
 		this.particles.push(new Particle(origin, velocity, lifetime));
+	}
+
+	this.onSwatchChanged = function(swatch)
+	{
+
 	}
 }
 

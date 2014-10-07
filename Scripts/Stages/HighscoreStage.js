@@ -1,11 +1,5 @@
 ﻿//! require "BaseStage.js"
 
-Highscore = function(initials, score)
-{
-	this.initials = initials;
-	this.score = score;
-}
-
 HighscoreEntry = function(rank, highscore)
 {
 	this.rank = rank;
@@ -111,7 +105,9 @@ HighscoreStage.prototype.onEnter = function()
 
 	for (var i = 0; i < scoreCount; ++i)
 	{
-		var highscoreEntry = this.add(new HighscoreEntry(i + 1, new Highscore("AAA", 123)));
+		if (i >= game.getHighscoreCount()) break;
+
+		var highscoreEntry = this.add(new HighscoreEntry(i + 1, game.getHighscoreByIndex(i)));
 		highscoreEntry.position = new Vector2f(graphics.width * 0.2, graphics.height - 20 - (i + 1) * 12);
 
 		this.entries.push(highscoreEntry);

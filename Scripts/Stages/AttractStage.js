@@ -14,8 +14,6 @@ AttractStage = function(demo)
 
 	this.onEnter = function()
 	{
-		Debug.log("attract on enter");
-
 		var text = graphics.getImage("title");
 
 		title = this.add(new Sprite(text, this.getCurrentSwatch()), 0);
