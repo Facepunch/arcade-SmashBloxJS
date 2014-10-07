@@ -11,7 +11,36 @@ BaseStage = function()
 		0x007800, 0x00B800, 0xB8F818, 0x00B800, 0x007800
 	];
 
+	this.fadeTiles = null;
+	this.curFadeVal;
+
 	this.particles = [];
+
+	this.setFadeTiles = function(val)
+	{
+		if (!this.fadeTiles)
+		{
+			var tileSize = new Vector2i(40, 40);
+			this.fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
+		}
+
+		var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
+
+		if (iVal == this.curFadeVal) return;
+
+		this.curFadeVal = iVal;
+
+		var image = graphics.getImage("transition", iVal);
+		var swatch = graphics.palette.findSwatch(0x000000, 0x000000, 0x000000);
+
+		for (var r = 0; r < this.fadeTiles.rows; ++r)
+		{
+			for (var c = 0; c < this.fadeTiles.columns; ++c)
+			{
+				this.fadeTiles.setTile(c, r, image, swatch);
+			}
+		}
+	}
 
 	this.nextSwatch = function()
 	{
@@ -65,6 +94,8 @@ BaseStage.prototype.onUpdate = function()
 	{
 		this.particles.splice(indices[i], 1);
 	}
+
+	this.setFadeTiles(1.0);
 }
 
 BaseStage.prototype.onRender = function()
