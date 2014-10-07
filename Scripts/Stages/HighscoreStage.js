@@ -105,9 +105,9 @@ HighscoreStage.prototype.onEnter = function()
 
 	for (var i = 0; i < scoreCount; ++i)
 	{
-		if (i >= game.getHighscoreCount()) break;
+		if (i >= game.HighscoreCount) break;
 
-		var highscoreEntry = this.add(new HighscoreEntry(i + 1, game.getHighscoreByIndex(i)));
+		var highscoreEntry = this.add(new HighscoreEntry(i + 1, game.getHighscore(i)));
 		highscoreEntry.position = new Vector2f(graphics.width * 0.2, graphics.height - 20 - (i + 1) * 12);
 
 		this.entries.push(highscoreEntry);

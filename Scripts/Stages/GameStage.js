@@ -135,6 +135,9 @@ GameStage = function(demo)
 
 		this.combo = 0;
 
+		this.fadeIn(0.25);
+
+
 		this.changeState(State.Serving);
 	}
 
