@@ -130,6 +130,7 @@ GameStage = function(demo)
 	{
 		this.ball.velocity = Vector2f.ZERO;
 		this.ball.y = this.paddle.y + 8;
+		this.ball.x = this.paddle.getNextX();
 		this.ball.isVisible = true;
 
 		this.combo = 0;

@@ -104,7 +104,14 @@ EnterScoreStage = function(demo, completed, score)
 
 		if (this.curChar >= 3)
 		{
-			game.submitAndShowHighscores(new Highscore("ABC", this.score));
+			var initials = "";
+
+			for (var i = 0; i < this.charTexts.length; ++i)
+			{
+				initials += this.charTexts[i].value;
+			}
+
+			game.submitAndShowHighscores(new Highscore(initials, this.score));
 		}
 	}
 
