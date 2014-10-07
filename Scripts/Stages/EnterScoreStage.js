@@ -110,7 +110,7 @@ EnterScoreStage = function(demo, completed, score)
 			{
 				initials += this.charTexts[i].value;
 			}
-
+			
 			game.submitAndShowHighscores(new Highscore(initials, this.score));
 		}
 	}

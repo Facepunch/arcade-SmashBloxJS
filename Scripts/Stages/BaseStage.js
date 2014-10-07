@@ -11,34 +11,74 @@ BaseStage = function()
 		0x007800, 0x00B800, 0xB8F818, 0x00B800, 0x007800
 	];
 
-	this.fadeTiles = null;
-	this.curFadeVal;
+	var fadeTiles = null;
+	var curFadeVal = 0;
+	var fadeFrameCount = 0;
+	var curFadeFrame = 0;
+	var fadingOut = false;
 
 	this.particles = [];
 
 	this.setFadeTiles = function(val)
 	{
-		if (!this.fadeTiles)
+		if (!fadeTiles)
 		{
 			var tileSize = new Vector2i(40, 40);
-			this.fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
+			fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
 		}
 
 		var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
 
-		if (iVal == this.curFadeVal) return;
+		if (iVal == curFadeVal) return;
 
-		this.curFadeVal = iVal;
+		curFadeVal = iVal;
 
 		var image = graphics.getImage("transition", iVal);
 		var swatch = graphics.palette.findSwatch(0x000000, 0x000000, 0x000000);
 
-		for (var r = 0; r < this.fadeTiles.rows; ++r)
+		for (var r = 0; r < fadeTiles.rows; ++r)
 		{
-			for (var c = 0; c < this.fadeTiles.columns; ++c)
+			for (var c = 0; c < fadeTiles.columns; ++c)
 			{
-				this.fadeTiles.setTile(c, r, image, swatch);
+				fadeTiles.setTile(c, r, image, swatch);
 			}
+		}
+	}
+
+	this.fadeIn = function(duration)
+	{
+		fadeFrameCount = Math.round(duration * game.updateRate);
+		curFadeFrame = 0;
+		fadingOut = false;
+
+		this.setFadeTiles(1.0);
+	}
+
+	this.fadeOut = function(duration)
+	{
+		fadeFrameCount = Math.round(duration * game.updateRate);
+		curFadeFrame = 0;
+		fadingOut = true;
+
+		this.setFadeTiles(0.0);
+	}
+
+	this.updateFading = function()
+	{
+		if (fadeFrameCount > 0 && curFadeFrame < fadeFrameCount)
+		{
+			var t = curFadeFrame / fadeFrameCount;
+
+			if (fadingOut)
+			{
+				this.setFadeTiles(t);
+			}
+			else
+			{
+				this.setFadeTiles(1.0 - t);
+			}
+
+			curFadeFrame++;
 		}
 	}
 
@@ -95,7 +135,7 @@ BaseStage.prototype.onUpdate = function()
 		this.particles.splice(indices[i], 1);
 	}
 
-	this.setFadeTiles(1.0);
+	this.updateFading();
 }
 
 BaseStage.prototype.onRender = function()

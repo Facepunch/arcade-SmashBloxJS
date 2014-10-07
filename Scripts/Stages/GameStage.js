@@ -129,8 +129,8 @@ GameStage = function(demo)
 	this.updateNewBallState = function()
 	{
 		this.ball.velocity = Vector2f.ZERO;
-		this.ball.y = this.paddle.y + 8;
 		this.ball.x = this.paddle.getNextX();
+		this.ball.y = this.paddle.y + 8;
 		this.ball.isVisible = true;
 
 		this.combo = 0;
@@ -193,6 +193,8 @@ GameStage.prototype.onEnter = function()
 	this.ball.isVisible = true;
 
 	this.changeState(State.Serving);
+
+	this.fadeIn(0.25);
 }
 
 GameStage.prototype.onUpdate = function()
