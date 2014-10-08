@@ -13,6 +13,7 @@ AttractStage = function(demo)
 	this.insertCoin = null;
 
 	this.changingStage = false;
+	this.showScores = false;
 }
 
 AttractStage.prototype = new BaseStage();
@@ -58,6 +59,7 @@ AttractStage.prototype.onUpdate = function()
 		if (!this.changingStage)
 		{
 			this.changingStage = true;
+			this.showScores = controls.b.justPressed;
 
 			this.fadeOut(this._fadeDuration);
 		}
@@ -65,9 +67,7 @@ AttractStage.prototype.onUpdate = function()
 
 	if (this.changingStage && !this._fadingOut)
 	{
-		var showScores = controls.b.isDown;
-
-		if (showScores)
+		if (this.showScores)
 		{
 			game.showHighscores();
 		}
