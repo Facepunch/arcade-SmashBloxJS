@@ -201,7 +201,7 @@ GameStage.prototype.onEnter = function()
 
 	this.changeState(State.Serving);
 
-	this.fadeIn(0.25);
+	this.fadeIn(this._fadeDuration);
 }
 
 GameStage.prototype.onUpdate = function()

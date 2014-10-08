@@ -59,7 +59,7 @@ AttractStage.prototype.onUpdate = function()
 		{
 			this.changeStage = true;
 
-			this.fadeOut(0.25);
+			this.fadeOut(this._fadeDuration);
 		}
 	}
 
@@ -86,4 +86,6 @@ AttractStage.prototype.onSwatchChanged = function(swatch)
 AttractStage.prototype.onRender = function()
 {
 	demo.render(graphics, audio, this.frame, 0.25);
+
+	BaseStage.prototype.onRender.call(this);
 }

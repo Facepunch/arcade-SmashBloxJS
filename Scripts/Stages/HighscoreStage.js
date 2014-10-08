@@ -118,7 +118,7 @@ HighscoreStage.prototype.onEnter = function()
 		this.findNewEntry();
 	}
 
-	this.fadeIn(0.25);
+	this.fadeIn(this._fadeDuration);
 }
 
 HighscoreStage.prototype.onUpdate = function()

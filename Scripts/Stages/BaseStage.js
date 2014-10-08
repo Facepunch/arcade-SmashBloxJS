@@ -17,7 +17,8 @@ BaseStage = function()
 	this._fadeFrameCount = 0;
 	this._curFadeFrame = 0;
 	this._fadingOut = false;
-
+	this._fadeDuration = 0.25;
+	
 	this._particles = null;
 }
 
@@ -32,7 +33,7 @@ BaseStage.prototype.setFadeTiles = function(val)
 	if (!this._fadeTiles)
 	{
 		var tileSize = new Vector2i(40, 40);
-		this._fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
+		this._fadeTiles = new Tilemap(tileSize, graphics.size.divVec(tileSize));
 	}
 
 	var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
@@ -153,9 +154,12 @@ BaseStage.prototype.onUpdate = function()
 BaseStage.prototype.onRender = function()
 {
 	var particles = this.getParticles();
+
 	for	(var i = 0; i < particles.length; i++)
 	{
 		var position = particles[i].position;
 		graphics.drawPoint(0, 1, new Vector2i(position.x, position.y));
 	}
+
+	this._fadeTiles.render(graphics);
 }

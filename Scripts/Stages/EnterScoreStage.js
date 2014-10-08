@@ -57,7 +57,7 @@ EnterScoreStage.prototype.onEnter = function()
 		this.changeState(State.WaitForContinue);
 	}
 
-	this.fadeIn(0.25);
+	this.fadeIn(this._fadeDuration);
 }
 
 EnterScoreStage.prototype.onUpdate = function()
