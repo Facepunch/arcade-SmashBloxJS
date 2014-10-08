@@ -98,6 +98,10 @@ GameStage = function(demo)
 			this.setLives(this.lives - 1);
 			audio.play(audio.getSound("miss"), 0.0, 1.0, 1.0);
 
+			this.ball.velocity = Vector2f.ZERO;
+			this.ball.isVisible = false;
+			this.ball.alive = false;
+
 			this.changeState(State.NextLifeWait);
 		}
 	}
@@ -122,6 +126,7 @@ GameStage = function(demo)
 			}
 
 			this.ball.isVisible = false;
+			this.ball.alive = false;
 			this.ball.velocity = Vector2f.ZERO;
 		}
 	}
@@ -132,6 +137,7 @@ GameStage = function(demo)
 		this.ball.x = this.paddle.getNextX();
 		this.ball.y = this.paddle.y + 8;
 		this.ball.isVisible = true;
+		this.ball.alive = true;
 
 		this.combo = 0;
 
@@ -191,6 +197,7 @@ GameStage.prototype.onEnter = function()
 	this.ball.x = this.paddle.getNextX();
 	this.ball.y = this.paddle.y + 8;
 	this.ball.isVisible = true;
+	this.ball.alive = true;
 
 	this.changeState(State.Serving);
 
