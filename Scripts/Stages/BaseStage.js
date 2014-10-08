@@ -18,7 +18,7 @@ BaseStage = function()
 	this._curFadeFrame = 0;
 	this._fadingOut = false;
 	this._fadeDuration = 0.25;
-	
+
 	this._particles = null;
 }
 

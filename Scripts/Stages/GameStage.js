@@ -10,7 +10,7 @@ GameStage = function(demo)
 		Playing : 3,
 		LostBall : 4,
 		NextLifeWait : 5,
-		GameOver : 5
+		GameOver : 6
 	}
 
 	this.ball = null;
@@ -28,6 +28,8 @@ GameStage = function(demo)
 
 	this.lastParticle = 0;
 	this.nextLifeWait = 0.0;
+
+	this.changingStage = false;
 
 	this.setScore = function(score)
 	{
@@ -121,8 +123,6 @@ GameStage = function(demo)
 			else
 			{
 				this.changeState(State.GameOver);
-
-				game.enterHighscore(false, this.score);
 			}
 
 			this.ball.isVisible = false;
@@ -142,6 +142,20 @@ GameStage = function(demo)
 		this.combo = 0;
 
 		this.changeState(State.Serving);
+	}
+
+	this.updateGameOverState = function()
+	{
+		if (!this.changingStage)
+		{
+			this.changingStage = true;
+
+			this.fadeOut(this._fadeDuration);
+		}
+		else if (!this._fadingOut)
+		{
+			game.enterHighscore(false, this.score);
+		}
 	}
 
 	this.isCurrentState = function(state)
@@ -223,6 +237,10 @@ GameStage.prototype.onUpdate = function()
 	else if (this.isCurrentState(State.NextLifeWait))
 	{
 		this.updateNextLifeWaitState();
+	}
+	else if (this.isCurrentState(State.GameOver))
+	{
+		this.updateGameOverState();
 	}
 
 	BaseStage.prototype.onUpdate.call(this);

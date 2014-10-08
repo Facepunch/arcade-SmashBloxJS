@@ -12,7 +12,7 @@ AttractStage = function(demo)
 	this.title = null;
 	this.insertCoin = null;
 
-	this.changeStage = false;
+	this.changingStage = false;
 }
 
 AttractStage.prototype = new BaseStage();
@@ -31,7 +31,7 @@ AttractStage.prototype.onEnter = function()
 	this.insertCoin = this.add(new Sprite(text, swatch), 0);
 	this.insertCoin.position = graphics.size.sub(this.insertCoin.size).div(2).sub(Vector2i.UNIT_Y.mul(graphics.height / 4));
 
-	this.fadeIn(0.25);
+	this.fadeIn(this._fadeDuration);
 }
 
 AttractStage.prototype.onUpdate = function()
@@ -55,15 +55,15 @@ AttractStage.prototype.onUpdate = function()
 	if (controls.a.justPressed || controls.b.justPressed ||
 		controls.start.justPressed || controls.select.justPressed || !controls.analog.isZero)
 	{
-		if (!this.changeStage)
+		if (!this.changingStage)
 		{
-			this.changeStage = true;
+			this.changingStage = true;
 
 			this.fadeOut(this._fadeDuration);
 		}
 	}
 
-	if (this.changeStage && !this._fadingOut)
+	if (this.changingStage && !this._fadingOut)
 	{
 		var showScores = controls.b.isDown;
 
