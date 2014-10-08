@@ -24,6 +24,8 @@ EnterScoreStage = function(demo, completed, score)
 	this.whiteSwatch;
 
 	this.validChars = "_abcdefghijklmnopqrstuvwxyz0123456789".toUpperCase().split("");
+
+	this.changingState = false;
 }
 
 EnterScoreStage.prototype = new BaseStage();
@@ -72,10 +74,7 @@ EnterScoreStage.prototype.onUpdate = function()
 	}
 	else if (this.isCurrentState(State.WaitForContinue))
 	{
-		if (controls.a.justPressed || controls.start.justPressed)
-		{
-			game.showHighscores();
-		}
+		this.updateWaitForContinue();
 	}
 }
 
@@ -126,46 +125,77 @@ EnterScoreStage.prototype.onEnterInitials = function(textY)
 	this.charTexts[2].y = textY;
 }
 
+EnterScoreStage.prototype.updateWaitForContinue = function()
+{
+	if (controls.a.justPressed || controls.start.justPressed)
+	{
+		if (!this.changingState)
+		{
+			this.changingState = true;
+
+			this.fadeOut(this._fadeDuration);
+		}
+	}
+
+	if (this.changingState && !this._fadingOut)
+	{
+		game.showHighscores();
+	}
+}
+
 EnterScoreStage.prototype.updateEnterInitials = function()
 {
-	this.charTexts[this.curChar].swatch = this.getCurrentSwatch();
-	this.curIndex = this.validChars.indexOf(this.charTexts[this.curChar].value[0]);
+	if (!this.changingState)
+	{
+		this.charTexts[this.curChar].swatch = this.getCurrentSwatch();
+		this.curIndex = this.validChars.indexOf(this.charTexts[this.curChar].value[0]);
 
-	if (controls.a.justPressed || (this.curChar < 2 && controls.analog.x.justBecamePositive))
-	{
-		this.charTexts[this.curChar].swatch = this.whiteSwatch;
-		++this.curChar;
-	}
-	else if (this.curChar > 0 && (controls.b.justPressed || controls.analog.x.justBecameNegative))
-	{
-		this.charTexts[this.curChar].swatch = this.whiteSwatch;
-		--this.curChar;
-	}
-	else if (controls.analog.y.justBecameNegative)
-	{
-		this.curIndex = (this.curIndex + 1) % this.validChars.length;
-		this.charTexts[this.curChar].value = this.validChars[this.curIndex];
-	}
-	else if (controls.analog.y.justBecamePositive)
-	{
-		this.curIndex = (this.curIndex + this.validChars.length - 1) % this.validChars.length;
-		this.charTexts[this.curChar].value = this.validChars[this.curIndex];
-	}
-	else if (controls.start.justPressed)
-	{
-		this.curChar = 3;
+		if (controls.a.justPressed || (this.curChar < 2 && controls.analog.x.justBecamePositive))
+		{
+			this.charTexts[this.curChar].swatch = this.whiteSwatch;
+			++this.curChar;
+		}
+		else if (this.curChar > 0 && (controls.b.justPressed || controls.analog.x.justBecameNegative))
+		{
+			this.charTexts[this.curChar].swatch = this.whiteSwatch;
+			--this.curChar;
+		}
+		else if (controls.analog.y.justBecameNegative)
+		{
+			this.curIndex = (this.curIndex + 1) % this.validChars.length;
+			this.charTexts[this.curChar].value = this.validChars[this.curIndex];
+		}
+		else if (controls.analog.y.justBecamePositive)
+		{
+			this.curIndex = (this.curIndex + this.validChars.length - 1) % this.validChars.length;
+			this.charTexts[this.curChar].value = this.validChars[this.curIndex];
+		}
+		else if (controls.start.justPressed)
+		{
+			this.curChar = 3;
+		}
 	}
 
 	if (this.curChar >= 3)
 	{
-		var initials = "";
-
-		for (var i = 0; i < this.charTexts.length; ++i)
+		if (!this.changingState)
 		{
-			initials += this.charTexts[i].value;
+			this.changingState = true;
+
+			this.fadeOut(this._fadeDuration);
 		}
-		
-		game.submitAndShowHighscores(new Highscore(initials, this.score));
+
+		if (this.changingState && !this._fadingOut)
+		{
+			var initials = "";
+
+			for (var i = 0; i < this.charTexts.length; ++i)
+			{
+				initials += this.charTexts[i].value;
+			}
+			
+			game.submitAndShowHighscores(new Highscore(initials, this.score));
+		}
 	}
 }
 

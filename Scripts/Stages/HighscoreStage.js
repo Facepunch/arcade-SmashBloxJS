@@ -9,6 +9,8 @@ HighscoreEntry = function(rank, highscore)
 	this.nameText = null;
 	this.scoreText = null;
 
+	this.changingState = false;
+
 	this.getSwatch = function()
 	{
 		return this.rankText.swatch;
@@ -128,6 +130,16 @@ HighscoreStage.prototype.onUpdate = function()
 	this.flashSwatches();
 
 	if (controls.a.justPressed || controls.start.justPressed)
+	{
+		if (!this.changingState)
+		{
+			this.changingState = true;
+
+			this.fadeOut(this._fadeDuration);
+		}
+	}
+
+	if (this.changingState && !this._fadingOut)
 	{
 		game.reset();
 	}
