@@ -1,130 +1,133 @@
+var swatchIndex = 0; var convertedSwatches = false;
+var swatches = [
+	0x0000FC, 0x0078F8, 0x3CBCFC, 0x0078F8, 0x0000FC,
+	0x940084, 0xD800CC, 0xF878F8, 0xD800CC, 0x940084,
+	0xA81000, 0xF83800, 0xF87858, 0xF83800, 0xA81000,
+	0x503000, 0xAC7C00, 0xF8B800, 0xAC7C00, 0x503000,
+	0x007800, 0x00B800, 0xB8F818, 0x00B800, 0x007800
+];
+
 BaseStage = function()
 {
-	var swatchIndex = 0;
+	this._fadeTiles = null;
+	this._curFadeVal = 0;
+	this._fadeFrameCount = 0;
+	this._curFadeFrame = 0;
+	this._fadingOut = false;
 
-	var convertedSwatches = false;
-	var swatches = [
-		0x0000FC, 0x0078F8, 0x3CBCFC, 0x0078F8, 0x0000FC,
-		0x940084, 0xD800CC, 0xF878F8, 0xD800CC, 0x940084,
-		0xA81000, 0xF83800, 0xF87858, 0xF83800, 0xA81000,
-		0x503000, 0xAC7C00, 0xF8B800, 0xAC7C00, 0x503000,
-		0x007800, 0x00B800, 0xB8F818, 0x00B800, 0x007800
-	];
+	this._particles = null;
+}
 
-	var fadeTiles = null;
-	var curFadeVal = 0;
-	var fadeFrameCount = 0;
-	var curFadeFrame = 0;
-	var fadingOut = false;
+BaseStage.prototype.getParticles = function()
+{
+	if (!this._particles) this._particles = [];
+	return this._particles;
+}
 
-	this.particles = [];
-
-	this.setFadeTiles = function(val)
+BaseStage.prototype.setFadeTiles = function(val)
+{
+	if (!this._fadeTiles)
 	{
-		if (!fadeTiles)
+		var tileSize = new Vector2i(40, 40);
+		this._fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
+	}
+
+	var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
+
+	if (iVal == this._curFadeVal) return;
+
+	this._curFadeVal = iVal;
+
+	var image = graphics.getImage("transition", iVal);
+	var swatch = graphics.palette.findSwatch(0x000000, 0x000000, 0x000000);
+
+	for (var r = 0; r < this._fadeTiles.rows; ++r)
+	{
+		for (var c = 0; c < this._fadeTiles.columns; ++c)
 		{
-			var tileSize = new Vector2i(40, 40);
-			fadeTiles = this.add(new Tilemap(tileSize, graphics.size.divVec(tileSize)), Number.MAX_VALUE);
-		}
-
-		var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
-
-		if (iVal == curFadeVal) return;
-
-		curFadeVal = iVal;
-
-		var image = graphics.getImage("transition", iVal);
-		var swatch = graphics.palette.findSwatch(0x000000, 0x000000, 0x000000);
-
-		for (var r = 0; r < fadeTiles.rows; ++r)
-		{
-			for (var c = 0; c < fadeTiles.columns; ++c)
-			{
-				fadeTiles.setTile(c, r, image, swatch);
-			}
+			this._fadeTiles.setTile(c, r, image, swatch);
 		}
 	}
+}
 
-	this.fadeIn = function(duration)
+BaseStage.prototype.fadeIn = function(duration)
+{
+	this._fadeFrameCount = Math.round(duration * game.updateRate);
+	this._curFadeFrame = 0;
+	this._fadingOut = false;
+
+	this.setFadeTiles(1.0);
+}
+
+BaseStage.prototype.fadeOut = function(duration)
+{
+	this._fadeFrameCount = Math.round(duration * game.updateRate);
+	this._curFadeFrame = 0;
+	this._fadingOut = true;
+
+	this.setFadeTiles(0.0);
+}
+
+BaseStage.prototype.updateFading = function()
+{
+	if (this._fadeFrameCount > 0 && this._curFadeFrame < this._fadeFrameCount)
 	{
-		fadeFrameCount = Math.round(duration * game.updateRate);
-		curFadeFrame = 0;
-		fadingOut = false;
+		var t = this._curFadeFrame / this._fadeFrameCount;
 
-		this.setFadeTiles(1.0);
-	}
-
-	this.fadeOut = function(duration)
-	{
-		fadeFrameCount = Math.round(duration * game.updateRate);
-		curFadeFrame = 0;
-		fadingOut = true;
-
-		this.setFadeTiles(0.0);
-	}
-
-	this.updateFading = function()
-	{
-		if (fadeFrameCount > 0 && curFadeFrame < fadeFrameCount)
+		if (this._fadingOut)
 		{
-			var t = curFadeFrame / fadeFrameCount;
+			this.setFadeTiles(t);
+		}
+		else
+		{
+			this.setFadeTiles(1.0 - t);
+		}
 
-			if (fadingOut)
-			{
-				this.setFadeTiles(t);
-			}
-			else
-			{
-				this.setFadeTiles(1.0 - t);
-			}
+		this._curFadeFrame++;
+	}
+}
 
-			curFadeFrame++;
+BaseStage.prototype.nextSwatch = function()
+{
+	swatchIndex = (swatchIndex + 1) % swatches.length;
+
+	this.onSwatchChanged(this.getCurrentSwatch());
+}
+
+BaseStage.prototype.getCurrentSwatch = function()
+{
+	if (!convertedSwatches)
+	{
+		for (var i = 0; i < swatches.length; ++i)
+		{
+			var clr = swatches[i];
+			swatches[i] = graphics.palette.findSwatch(clr, clr, clr);
 		}
 	}
 
-	this.nextSwatch = function()
-	{
-		swatchIndex = (swatchIndex + 1) % swatches.length;
+	return swatches[swatchIndex];
+}
 
-		this.onSwatchChanged(this.getCurrentSwatch());
-	}
+BaseStage.prototype.addParticle = function(origin, velocity, lifetime)
+{
+	this.getParticles().push(new Particle(origin, velocity, lifetime));
+}
 
-	this.getCurrentSwatch = function()
-	{
-		if (!convertedSwatches)
-		{
-			convertedSwatches = true;
+BaseStage.prototype.onSwatchChanged = function(swatch)
+{
 
-			for (var i = 0; i < swatches.length; ++i)
-			{
-				var clr = swatches[i];
-				swatches[i] = graphics.palette.findSwatch(clr, clr, clr);
-			}
-		}
-
-		return swatches[swatchIndex];
-	}
-
-	this.addParticle = function(origin, velocity, lifetime)
-	{
-		this.particles.push(new Particle(origin, velocity, lifetime));
-	}
-
-	this.onSwatchChanged = function(swatch)
-	{
-
-	}
 }
 
 BaseStage.prototype.onUpdate = function()
 {
 	var indices = [];
+	var particles = this.getParticles();
 
-	for	(var i = 0; i < this.particles.length; i++)
+	for	(var i = 0; i < particles.length; i++)
 	{
-		this.particles[i].update(this.timestep);
+		particles[i].update(this.timestep);
 
-		if (this.particles[i].shouldRemove())
+		if (particles[i].shouldRemove())
 		{
 			indices.push(i);
 		}
@@ -132,7 +135,7 @@ BaseStage.prototype.onUpdate = function()
 
 	for	(var i = 0; i < indices.length; i++)
 	{
-		this.particles.splice(indices[i], 1);
+		particles.splice(indices[i], 1);
 	}
 
 	this.updateFading();
@@ -140,9 +143,10 @@ BaseStage.prototype.onUpdate = function()
 
 BaseStage.prototype.onRender = function()
 {
-	for	(var i = 0; i < this.particles.length; i++)
+	var particles = this.getParticles();
+	for	(var i = 0; i < particles.length; i++)
 	{
-		var position = this.particles[i].position;
+		var position = particles[i].position;
 		graphics.drawPoint(0, 1, new Vector2i(position.x, position.y));
 	}
 }
