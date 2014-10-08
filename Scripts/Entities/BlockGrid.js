@@ -3,7 +3,7 @@
 	this.grid = [];
 	this.tiles = new Tilemap(new Vector2i(16, 8), new Vector2i(cols, rows));
 	this.blockImage = null;
-	this.blockSwatches = [];
+	this.blockSwatches = null;
 	this.tileSize = new Vector2f(this.tiles.tileWidth, this.tiles.tileHeight);
 
 	var gridSize = cols * rows;
@@ -12,8 +12,6 @@
 	{
 		this.grid.push(0);
 	}
-
-	this.localBounds = new RectF(0, 0, this.tiles.width, this.tiles.height);
 
 	this.getPhases = function() { return this.blockSwatches.length; }
 	this.getColumns = function() { return this.tiles.columns; }
@@ -61,7 +59,7 @@
 		return { hit : hit, block : block, phase : phase }
 	}
 
-	var contains = function(arr, value)
+	function arrayContains(arr, value)
 	{
 		for (var i = 0; i < arr.length; ++i)
 		{
@@ -77,7 +75,13 @@
 		var normal = Vector2f.ZERO;
 		var phase = 0;
 
-		//if (!ball.bounds.intersects(this.bounds)) return false;
+		if (!ball.bounds.intersects(this.bounds))
+		{
+			//Debug.log(ball.bounds);
+			//Debug.log(this.localBounds);
+
+			return { hit : false, normal : Vector2f.ZERO, phase : 0 }
+		}
 
 		var bounds = ball.bounds.sub(this.position).divVec(this.tileSize);
 		var collided = [];
@@ -91,7 +95,7 @@
 			normal = normal.add(new Vector2f(1, -1));
 			phase = collideRes.phase;
 
-			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
+			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.topRight, phase);
@@ -102,7 +106,7 @@
 			normal = normal.add(new Vector2f(-1, -1));
 			phase = collideRes.phase;
 
-			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
+			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.bottomLeft, phase);
@@ -113,7 +117,7 @@
 			normal = normal.add(new Vector2f(1, 1));
 			phase = collideRes.phase;
 
-			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
+			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		collideRes = this.isColliding(bounds.bottomRight, phase);
@@ -124,7 +128,7 @@
 			normal = normal.add(new Vector2f(-1, 1));
 			phase = collideRes.phase;
 
-			if (!contains(collided, collideRes.block)) collided.push(collideRes.block);
+			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
 		}
 
 		for (var i = 0; i < collided.length; ++i)
@@ -148,11 +152,15 @@ BlockGrid.prototype.onLoadGraphics = function()
 {
 	this.blockImage = graphics.getImage("block");
 
+	if (!this.blockSwatches) this.blockSwatches = [];
+
 	this.blockSwatches.push(graphics.palette.findSwatch(0x0000FC, 0x0078F8, 0x3CBCFC));
 	this.blockSwatches.push(graphics.palette.findSwatch(0x940084, 0xD800CC, 0xF878F8));
 	this.blockSwatches.push(graphics.palette.findSwatch(0xA81000, 0xF83800, 0xF87858));
 	this.blockSwatches.push(graphics.palette.findSwatch(0x503000, 0xAC7C00, 0xF8B800));
 	this.blockSwatches.push(graphics.palette.findSwatch(0x007800, 0x00B800, 0xB8F818));
+
+	this.localBounds = new RectF(0, 0, this.tiles.width, this.tiles.height);
 }
 
 BlockGrid.prototype.onRender = function()

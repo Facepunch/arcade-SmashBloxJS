@@ -30,7 +30,7 @@ Ball.prototype.onUpdate = function()
 		audio.play(this.paddleHit, this.panValue, 1.0, 1.0);
 	}
 
-	if (this.stage.paddle.bounds.intersects(this.bounds))
+	if (this.bounds.intersects(this.stage.paddle.bounds))
 	{
 		this.bounce(Vector2f.UNIT_Y, 1.0);
 

@@ -5,7 +5,7 @@
 
 	this.leftEndSprite = null;
 	this.rightEndSprite = null;
-	this.midSprites = [];
+	this.midSprites = null;
 
 	this.swatch = null;
 
@@ -78,11 +78,14 @@ Paddle.prototype.resize = function()
 	this.setSpriteOffset(this.leftEndSprite, new Vector2i(-this.size * 4 - this.leftEndSprite.width, -2));
 	this.setSpriteOffset(this.rightEndSprite, new Vector2i(this.size * 4, -2));
 
-	for	(var i = 0; i < this.midSprites.length; i++)
+	if (this.midSprites)
 	{
-		this.remove(this.midSprites[i]);
+		for	(var i = 0; i < this.midSprites.length; i++)
+		{
+			this.remove(this.midSprites[i]);
+		}
 	}
-	
+
 	this.midSprites = [];
 
 	for	(var i = 0; i < this.size; i++)
