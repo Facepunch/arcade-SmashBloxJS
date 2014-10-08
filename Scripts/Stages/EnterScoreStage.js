@@ -56,10 +56,14 @@ EnterScoreStage.prototype.onEnter = function()
 	{
 		this.changeState(State.WaitForContinue);
 	}
+
+	this.fadeIn(0.25);
 }
 
 EnterScoreStage.prototype.onUpdate = function()
 {
+	BaseStage.prototype.onUpdate.call(this);
+	
 	this.flashSwatches();
 
 	if (this.isCurrentState(State.EnterInitials))

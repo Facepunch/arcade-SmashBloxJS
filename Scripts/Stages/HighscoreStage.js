@@ -117,10 +117,14 @@ HighscoreStage.prototype.onEnter = function()
 	{
 		this.findNewEntry();
 	}
+
+	this.fadeIn(0.25);
 }
 
 HighscoreStage.prototype.onUpdate = function()
 {
+	BaseStage.prototype.onUpdate.call(this);
+	
 	this.flashSwatches();
 
 	if (controls.a.justPressed || controls.start.justPressed)
