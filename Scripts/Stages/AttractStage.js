@@ -11,6 +11,8 @@ AttractStage = function(demo)
 
 	this.title = null;
 	this.insertCoin = null;
+
+	this.changeStage = false;
 }
 
 AttractStage.prototype = new BaseStage();
@@ -52,6 +54,16 @@ AttractStage.prototype.onUpdate = function()
 
 	if (controls.a.justPressed || controls.b.justPressed ||
 		controls.start.justPressed || controls.select.justPressed || !controls.analog.isZero)
+	{
+		if (!this.changeStage)
+		{
+			this.changeStage = true;
+
+			this.fadeOut(0.25);
+		}
+	}
+
+	if (this.changeStage && !this._fadingOut)
 	{
 		var showScores = controls.b.isDown;
 

@@ -88,6 +88,10 @@ BaseStage.prototype.updateFading = function()
 
 		this._curFadeFrame++;
 	}
+	else
+	{
+		this._fadingOut = false;
+	}
 }
 
 BaseStage.prototype.nextSwatch = function()
