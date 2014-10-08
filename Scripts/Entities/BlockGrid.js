@@ -79,7 +79,7 @@
 
 		//if (!ball.bounds.intersects(this.bounds)) return false;
 
-		var bounds = ball.bounds.subVector2f(this.position).divVector2f(this.tileSize);
+		var bounds = ball.bounds.sub(this.position).divVec(this.tileSize);
 		var collided = [];
 		var collideRes;
 
