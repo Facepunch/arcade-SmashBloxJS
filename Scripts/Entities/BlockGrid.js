@@ -1,10 +1,10 @@
 ﻿BlockGrid = function(cols, rows)
 {
 	this.grid = [];
-	this.tiles = new Tilemap(new Vector2i(16, 8), new Vector2i(cols, rows));
+	this.tiles = new GameAPI.BudgetBoy.Tilemap(new GameAPI.Vector2i(16, 8), new GameAPI.Vector2i(cols, rows));
 	this.blockImage = null;
 	this.blockSwatches = null;
-	this.tileSize = new Vector2f(this.tiles.tileWidth, this.tiles.tileHeight);
+	this.tileSize = new GameAPI.Vector2f(this.tiles.tileWidth, this.tiles.tileHeight);
 
 	var gridSize = cols * rows;
 
@@ -72,7 +72,7 @@
 	this.checkForCollision = function(ball)
 	{
 		var hit = false;
-		var normal = Vector2f.ZERO;
+		var normal = GameAPI.Vector2f.ZERO;
 		var phase = 0;
 
 		if (!ball.bounds.intersects(this.bounds))
@@ -80,7 +80,7 @@
 			//Debug.log(ball.bounds);
 			//Debug.log(this.localBounds);
 
-			return { hit : false, normal : Vector2f.ZERO, phase : 0 }
+			return { hit : false, normal : GameAPI.Vector2f.ZERO, phase : 0 }
 		}
 
 		var bounds = ball.bounds.sub(this.position).divVec(this.tileSize);
@@ -92,7 +92,7 @@
 		if (collideRes.hit)
 		{
 			hit = true;
-			normal = normal.add(new Vector2f(1, -1));
+			normal = normal.add(new GameAPI.Vector2f(1, -1));
 			phase = collideRes.phase;
 
 			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
@@ -103,7 +103,7 @@
 		if (collideRes.hit)
 		{
 			hit = true;
-			normal = normal.add(new Vector2f(-1, -1));
+			normal = normal.add(new GameAPI.Vector2f(-1, -1));
 			phase = collideRes.phase;
 
 			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
@@ -114,7 +114,7 @@
 		if (collideRes.hit)
 		{
 			hit = true;
-			normal = normal.add(new Vector2f(1, 1));
+			normal = normal.add(new GameAPI.Vector2f(1, 1));
 			phase = collideRes.phase;
 
 			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
@@ -125,7 +125,7 @@
 		if (collideRes.hit)
 		{
 			hit = true;
-			normal = normal.add(new Vector2f(-1, 1));
+			normal = normal.add(new GameAPI.Vector2f(-1, 1));
 			phase = collideRes.phase;
 
 			if (!arrayContains(collided, collideRes.block)) collided.push(collideRes.block);
@@ -160,7 +160,7 @@ BlockGrid.prototype.onLoadGraphics = function()
 	this.blockSwatches.push(graphics.palette.findSwatch(0x503000, 0xAC7C00, 0xF8B800));
 	this.blockSwatches.push(graphics.palette.findSwatch(0x007800, 0x00B800, 0xB8F818));
 
-	this.localBounds = new RectF(0, 0, this.tiles.width, this.tiles.height);
+	this.localBounds = new GameAPI.RectF(0, 0, this.tiles.width, this.tiles.height);
 }
 
 BlockGrid.prototype.onRender = function()

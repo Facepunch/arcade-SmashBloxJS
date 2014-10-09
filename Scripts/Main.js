@@ -18,6 +18,8 @@ function setupGraphicsInfo(info)
 
 var demo = null;
 
+var game = {};
+
 game.onLoadResources = function(volume)
 {
 	demo = volume.get(Demo, "attract");
@@ -51,14 +53,14 @@ game.submitAndShowHighscores = function(highscore)
 
 game.onSetupInitialScores = function()
 {
-	game.addInitialScore(new Highscore("AAA", 100));
-	game.addInitialScore(new Highscore("RLY", 90));
-	game.addInitialScore(new Highscore("LAY", 80));
-	game.addInitialScore(new Highscore("BUC", 70));
-	game.addInitialScore(new Highscore("ROB", 60));
-	game.addInitialScore(new Highscore("ZKS", 50));
-	game.addInitialScore(new Highscore("IAN", 40));
-	game.addInitialScore(new Highscore("GAR", 30));
-	game.addInitialScore(new Highscore("JON", 20));
-	game.addInitialScore(new Highscore("IVN", 10));
+	game.addInitialScore(new GameAPI.Highscore("AAA", 100));
+	game.addInitialScore(new GameAPI.Highscore("RLY", 90));
+	game.addInitialScore(new GameAPI.Highscore("LAY", 80));
+	game.addInitialScore(new GameAPI.Highscore("BUC", 70));
+	game.addInitialScore(new GameAPI.Highscore("ROB", 60));
+	game.addInitialScore(new GameAPI.Highscore("ZKS", 50));
+	game.addInitialScore(new GameAPI.Highscore("IAN", 40));
+	game.addInitialScore(new GameAPI.Highscore("GAR", 30));
+	game.addInitialScore(new GameAPI.Highscore("JON", 20));
+	game.addInitialScore(new GameAPI.Highscore("IVN", 10));
 }

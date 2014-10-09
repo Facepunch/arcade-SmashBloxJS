@@ -38,13 +38,13 @@ EnterScoreStage.prototype.onEnter = function()
 
 	var swatch = graphics.palette.findSwatch(0xffffff, 0xffffff, 0xffffff);
 
-	this.headerSprite = this.add(new Sprite(headerImage, swatch), 0);
+	this.headerSprite = this.add(new GameAPI.BudgetBoy.Sprite(headerImage, swatch), 0);
 	this.headerSprite.x = (graphics.width - headerImage.width) / 2;
 	this.headerSprite.y = graphics.height - headerImage.height - 8;
 
 	var font = graphics.getImage("font");
 
-	var text = this.add(new Text(font, swatch), 0);
+	var text = this.add(new GameAPI.BudgetBoy.Text(font, swatch), 0);
 	text.value = "FINAL SCORE: " + this.score;
 	text.x = (graphics.width - text.width) / 2;
 	text.y = this.headerSprite.y - text.height - 16;
@@ -95,11 +95,11 @@ EnterScoreStage.prototype.onEnterInitials = function(textY)
 
 	var newHighscoreImage = graphics.getImage("newhighscore");
 
-	this.newHighscoreSprite = this.add(new Sprite(newHighscoreImage, this.getCurrentSwatch()), 0);
+	this.newHighscoreSprite = this.add(new GameAPI.BudgetBoy.Sprite(newHighscoreImage, this.getCurrentSwatch()), 0);
 	this.newHighscoreSprite.x = (graphics.width - newHighscoreImage.width) / 2;
 	this.newHighscoreSprite.y = textY - newHighscoreImage.height - 16;
 
-	var text = this.add(new Text(font, this.whiteSwatch), 0);
+	var text = this.add(new GameAPI.BudgetBoy.Text(font, this.whiteSwatch), 0);
 	text.value = "ENTER YOUR INITIALS";
 	text.x = (graphics.width - text.width) / 2;
 	text.y = this.newHighscoreSprite.y - text.height - 8;
@@ -109,17 +109,17 @@ EnterScoreStage.prototype.onEnterInitials = function(textY)
 	var dx = text.charSize.x + 4;
 	var x = (graphics.width - dx * 3) / 2 + 2;
 
-	this.charTexts.push(this.add(new Text(font, this.whiteSwatch), 0));
+	this.charTexts.push(this.add(new GameAPI.BudgetBoy.Text(font, this.whiteSwatch), 0));
 	this.charTexts[0].value = "A";
 	this.charTexts[0].x = (x += dx) - dx;
 	this.charTexts[0].y = textY;
 
-	this.charTexts.push(this.add(new Text(font, this.whiteSwatch), 0));
+	this.charTexts.push(this.add(new GameAPI.BudgetBoy.Text(font, this.whiteSwatch), 0));
 	this.charTexts[1].value = "A";
 	this.charTexts[1].x = (x += dx) - dx;
 	this.charTexts[1].y = textY;
 
-	this.charTexts.push(this.add(new Text(font, this.whiteSwatch), 0));
+	this.charTexts.push(this.add(new GameAPI.BudgetBoy.Text(font, this.whiteSwatch), 0));
 	this.charTexts[2].value = "A";
 	this.charTexts[2].x = (x += dx) - dx;
 	this.charTexts[2].y = textY;
@@ -194,7 +194,7 @@ EnterScoreStage.prototype.updateEnterInitials = function()
 				initials += this.charTexts[i].value;
 			}
 			
-			game.submitAndShowHighscores(new Highscore(initials, this.score));
+			game.submitAndShowHighscores(new GameAPI.Highscore(initials, this.score));
 		}
 	}
 }

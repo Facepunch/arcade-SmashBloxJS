@@ -20,7 +20,7 @@
 		this.size = size;
 		this.sizeChanged = true;
 
-		this.localBounds = new RectF(-this.size * 4 - 2, 2, this.size * 4 + 2, 0);
+		this.localBounds = new GameAPI.RectF(-this.size * 4 - 2, 2, this.size * 4 + 2, 0);
 	}
 
 	this.getNextX = function()
@@ -60,8 +60,8 @@ Paddle.prototype.onLoadGraphics = function()
 
 	this.swatch = graphics.palette.findSwatch(0xffffff, 0xffffff, 0xffffff);
 
-	this.leftEndSprite = this.add(new Sprite(this.endImage, this.swatch));
-	this.rightEndSprite = this.add(new Sprite(this.endImage, this.swatch));
+	this.leftEndSprite = this.add(new GameAPI.BudgetBoy.Sprite(this.endImage, this.swatch));
+	this.rightEndSprite = this.add(new GameAPI.BudgetBoy.Sprite(this.endImage, this.swatch));
 
 	this.rightEndSprite.flipX = true;
 }
@@ -75,8 +75,8 @@ Paddle.prototype.resize = function()
 {
 	this.sizeChanged = false;
 
-	this.setSpriteOffset(this.leftEndSprite, new Vector2i(-this.size * 4 - this.leftEndSprite.width, -2));
-	this.setSpriteOffset(this.rightEndSprite, new Vector2i(this.size * 4, -2));
+	this.setSpriteOffset(this.leftEndSprite, new GameAPI.Vector2i(-this.size * 4 - this.leftEndSprite.width, -2));
+	this.setSpriteOffset(this.rightEndSprite, new GameAPI.Vector2i(this.size * 4, -2));
 
 	if (this.midSprites)
 	{
@@ -90,7 +90,7 @@ Paddle.prototype.resize = function()
 
 	for	(var i = 0; i < this.size; i++)
 	{
-		var midSprite = this.add(new Sprite(this.midImage, this.swatch), new Vector2i(-this.size * 4 + i * 8, -2));
+		var midSprite = this.add(new GameAPI.BudgetBoy.Sprite(this.midImage, this.swatch), new GameAPI.Vector2i(-this.size * 4 + i * 8, -2));
 		this.midSprites.push(midSprite);
 	}
 }

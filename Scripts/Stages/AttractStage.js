@@ -22,15 +22,15 @@ AttractStage.prototype.onEnter = function()
 {
 	var text = graphics.getImage("title");
 
-	this.title = this.add(new Sprite(text, this.getCurrentSwatch()), 0);
-	this.title.position = graphics.size.sub(this.title.size).div(2).sub(Vector2i.UNIT_Y.mul(8));
+	this.title = this.add(new GameAPI.BudgetBoy.Sprite(text, this.getCurrentSwatch()), 0);
+	this.title.position = graphics.size.sub(this.title.size).div(2).sub(GameAPI.Vector2i.UNIT_Y.mul(8));
 
 	text = graphics.getImage("insertcoin");
 
 	var swatch = graphics.palette.findSwatch(0xffffff, 0xffffff, 0xffffff);
 
-	this.insertCoin = this.add(new Sprite(text, swatch), 0);
-	this.insertCoin.position = graphics.size.sub(this.insertCoin.size).div(2).sub(Vector2i.UNIT_Y.mul(graphics.height / 4));
+	this.insertCoin = this.add(new GameAPI.BudgetBoy.Sprite(text, swatch), 0);
+	this.insertCoin.position = graphics.size.sub(this.insertCoin.size).div(2).sub(GameAPI.Vector2i.UNIT_Y.mul(graphics.height / 4));
 
 	this.fadeIn(this._fadeDuration);
 }

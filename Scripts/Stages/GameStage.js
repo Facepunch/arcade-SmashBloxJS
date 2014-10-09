@@ -56,7 +56,7 @@ GameStage = function(demo)
 			if (this.ball.isVisible)
 			{
 				this.addParticle(this.ball.position,
-								 new Vector2f(Math.random() * 16.0 - 8.0, Math.random() * 16.0 - 8.0),
+								 new GameAPI.Vector2f(Math.random() * 16.0 - 8.0, Math.random() * 16.0 - 8.0),
 								 Math.random() * 0.25 + 0.25);
 			}
 
@@ -87,7 +87,7 @@ GameStage = function(demo)
 		{
 			this.changeState(State.Playing);
 
-			this.ball.velocity = new Vector2f(this.paddle.nextX > this.paddle.x ? 1.0 : -1.0, 1.5).mul(96.0);
+			this.ball.velocity = new GameAPI.Vector2f(this.paddle.nextX > this.paddle.x ? 1.0 : -1.0, 1.5).mul(96.0);
 		}
 	}
 
@@ -100,7 +100,7 @@ GameStage = function(demo)
 			this.setLives(this.lives - 1);
 			audio.play(audio.getSound("miss"), 0.0, 1.0, 1.0);
 
-			this.ball.velocity = Vector2f.ZERO;
+			this.ball.velocity = GameAPI.Vector2f.ZERO;
 			this.ball.isVisible = false;
 			this.ball.alive = false;
 
@@ -127,13 +127,13 @@ GameStage = function(demo)
 
 			this.ball.isVisible = false;
 			this.ball.alive = false;
-			this.ball.velocity = Vector2f.ZERO;
+			this.ball.velocity = GameAPI.Vector2f.ZERO;
 		}
 	}
 
 	this.updateNewBallState = function()
 	{
-		this.ball.velocity = Vector2f.ZERO;
+		this.ball.velocity = GameAPI.Vector2f.ZERO;
 		this.ball.x = this.paddle.getNextX();
 		this.ball.y = this.paddle.y + 8;
 		this.ball.isVisible = true;
@@ -185,11 +185,11 @@ GameStage.prototype.onEnter = function()
 	var font = graphics.getImage("font");
 	var white = graphics.palette.findSwatch(0xffffff, 0xffffff, 0xffffff);
 
-	this.scoreText = this.add(new Text(font, white), 1);
+	this.scoreText = this.add(new GameAPI.BudgetBoy.Text(font, white), 1);
 	this.scoreText.x = 4;
 	this.scoreText.y = graphics.height - 12;
 
-	this.livesText = this.add(new Text(font, white, 0));
+	this.livesText = this.add(new GameAPI.BudgetBoy.Text(font, white, 0));
 	this.livesText.y = graphics.height - 12;
 
 	this.setScore(0);
@@ -207,7 +207,7 @@ GameStage.prototype.onEnter = function()
 		}
 	}
 
-	this.ball.velocity = Vector2f.ZERO;
+	this.ball.velocity = GameAPI.Vector2f.ZERO;
 	this.ball.x = this.paddle.getNextX();
 	this.ball.y = this.paddle.y + 8;
 	this.ball.isVisible = true;

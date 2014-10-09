@@ -32,8 +32,8 @@ BaseStage.prototype.setFadeTiles = function(val)
 {
 	if (!this._fadeTiles)
 	{
-		var tileSize = new Vector2i(40, 40);
-		this._fadeTiles = new Tilemap(tileSize, graphics.size.divVec(tileSize));
+		var tileSize = new GameAPI.Vector2i(40, 40);
+		this._fadeTiles = new GameAPI.BudgetBoy.Tilemap(tileSize, graphics.size.divVec(tileSize));
 	}
 
 	var iVal = Math.round(Math.max(0.0, Math.min(1.0, val)) * 6.0);
@@ -158,7 +158,7 @@ BaseStage.prototype.onRender = function()
 	for	(var i = 0; i < particles.length; i++)
 	{
 		var position = particles[i].position;
-		graphics.drawPoint(0, 1, new Vector2i(position.x, position.y));
+		graphics.drawPoint(0, 1, new GameAPI.Vector2i(position.x, position.y));
 	}
 
 	this._fadeTiles.render(graphics);

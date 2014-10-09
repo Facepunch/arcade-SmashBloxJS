@@ -31,20 +31,20 @@ HighscoreEntry.prototype.onLoadGraphics = function()
 
 	var width = graphics.width * 0.6;
 
-	this.localBounds = new RectF(0, 0, width, font.height / 16);
+	this.localBounds = new GameAPI.RectF(0, 0, width, font.height / 16);
 
-	this.rankText = new Text(font, swatch);
+	this.rankText = new GameAPI.BudgetBoy.Text(font, swatch);
 	this.rankText.value = this.rank;
 
-	this.add(this.rankText, Vector2i.UNIT_X.mul(3 * this.rankText.charSize.x - this.rankText.width).div(2));
+	this.add(this.rankText, GameAPI.Vector2i.UNIT_X.mul(3 * this.rankText.charSize.x - this.rankText.width).div(2));
 
-	this.nameText = this.add(new Text(font, swatch), Vector2i.UNIT_X.mul(5 * this.rankText.charSize.x));
+	this.nameText = this.add(new GameAPI.BudgetBoy.Text(font, swatch), GameAPI.Vector2i.UNIT_X.mul(5 * this.rankText.charSize.x));
 	this.nameText.value = this.highscore.initials;
 
-	this.scoreText = new Text(font, swatch);
+	this.scoreText = new GameAPI.BudgetBoy.Text(font, swatch);
 	this.scoreText.value = this.highscore.score;
 
-	this.add(this.scoreText, Vector2i.UNIT_X.mul(Math.floor(width - this.scoreText.width)));
+	this.add(this.scoreText, GameAPI.Vector2i.UNIT_X.mul(Math.floor(width - this.scoreText.width)));
 }
 
 HighscoreStage = function(demo, highscore)
@@ -99,7 +99,7 @@ HighscoreStage.prototype.onEnter = function()
 
 	var titleImage = graphics.getImage("highscores");
 
-	this.title = this.add(new Sprite(titleImage, this.getCurrentSwatch()), 0);
+	this.title = this.add(new GameAPI.BudgetBoy.Sprite(titleImage, this.getCurrentSwatch()), 0);
 	this.title.x = (graphics.width - titleImage.width) / 2;
 	this.title.y = graphics.height - titleImage.height - 4;
 
@@ -110,7 +110,7 @@ HighscoreStage.prototype.onEnter = function()
 		if (i >= game.highscoreCount) break;
 
 		var highscoreEntry = this.add(new HighscoreEntry(i + 1, game.getHighscore(i)));
-		highscoreEntry.position = new Vector2f(graphics.width * 0.2, graphics.height - 20 - (i + 1) * 12);
+		highscoreEntry.position = new GameAPI.Vector2f(graphics.width * 0.2, graphics.height - 20 - (i + 1) * 12);
 
 		this.entries.push(highscoreEntry);
 	}
