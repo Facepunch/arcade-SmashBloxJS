@@ -1,4 +1,4 @@
-﻿//! require "BaseStage.js"
+﻿/// <reference path="BaseStage.js"/>
 
 EnterScoreStage = function(demo, completed, score)
 {

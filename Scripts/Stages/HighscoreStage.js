@@ -1,4 +1,4 @@
-﻿//! require "BaseStage.js"
+﻿/// <reference path="BaseStage.js"/>
 
 HighscoreEntry = function(rank, highscore)
 {
