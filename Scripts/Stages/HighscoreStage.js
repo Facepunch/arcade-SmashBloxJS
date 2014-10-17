@@ -95,7 +95,7 @@ HighscoreStage.prototype = new BaseStage();
 
 HighscoreStage.prototype.onEnter = function()
 {
-	graphics.setClearColor(13);
+	graphics.setClearColor(graphics.setClearColor(GameAPI.BudgetBoy.SwatchIndex.BLACK));
 
 	var titleImage = graphics.getImage("highscores");
 

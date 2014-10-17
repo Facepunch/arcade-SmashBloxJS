@@ -25,6 +25,15 @@ game.onLoadResources = function(volume)
 	demo = volume.get(Demo, "attract");
 }
 
+game.onLoadPalette = function(palette)
+{
+    palette.add(0x0000FC, 0x0078F8, 0x3CBCFC);
+    palette.add(0x940084, 0xD800CC, 0xF878F8);
+    palette.add(0xA81000, 0xF83800, 0xF87858);
+    palette.add(0x503000, 0xAC7C00, 0xF8B800);
+    palette.add(0x007800, 0x00B800, 0xB8F818);
+}
+
 game.onReset = function()
 {
 	game.setStage(new AttractStage(demo));

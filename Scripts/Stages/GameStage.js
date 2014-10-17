@@ -51,6 +51,8 @@ GameStage = function(demo)
 
 	this.particleSpam = function()
 	{
+		if (!this.ball) return;
+		
 		if (game.time - this.lastParticle > 1.0 / 30.0)
 		{
 			if (this.ball.isVisible)
@@ -170,7 +172,7 @@ GameStage.prototype.onEnter = function()
 {
 	this.changeState(State.PreInit);
 
-	graphics.setClearColor(13);
+	graphics.setClearColor(graphics.setClearColor(GameAPI.BudgetBoy.SwatchIndex.BLACK));
 
 	this.ball = this.add(new Ball(), 1);
 	this.paddle = this.add(new Paddle(), 0);

@@ -32,7 +32,7 @@ EnterScoreStage.prototype = new BaseStage();
 
 EnterScoreStage.prototype.onEnter = function()
 {
-	graphics.setClearColor(13);
+	graphics.setClearColor(graphics.setClearColor(GameAPI.BudgetBoy.SwatchIndex.BLACK));
 
 	var headerImage = this.completed ? graphics.getImage("yourewinner") : graphics.getImage("gameover");
 
