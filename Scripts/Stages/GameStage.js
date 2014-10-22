@@ -172,7 +172,7 @@ GameStage.prototype.onEnter = function()
 {
 	this.changeState(State.PreInit);
 
-	graphics.setClearColor(graphics.setClearColor(GameAPI.BudgetBoy.SwatchIndex.BLACK));
+	graphics.setClearColor(GameAPI.BudgetBoy.SwatchIndex.BLACK);
 
 	this.ball = this.add(new Ball(), 1);
 	this.paddle = this.add(new Paddle(), 0);

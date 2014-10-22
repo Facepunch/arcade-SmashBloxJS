@@ -158,8 +158,11 @@ BaseStage.prototype.onRender = function()
 	for	(var i = 0; i < particles.length; i++)
 	{
 		var position = particles[i].position;
-		graphics.drawPoint(0, 1, new GameAPI.Vector2i(position.x, position.y));
+		graphics.drawPoint(GameAPI.BudgetBoy.SwatchIndex.WHITE, 1, new GameAPI.Vector2i(position.x, position.y));
 	}
 
-	this._fadeTiles.render(graphics);
+	if (this._fadeTiles)
+	{
+		this._fadeTiles.render(graphics);
+	}
 }
